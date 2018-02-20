@@ -49,30 +49,30 @@ class enrol_notificationeabc_edit_form extends moodleform
 
         $mform->addElement('header', 'header', get_string('pluginname', 'enrol_notificationeabc'));
         $mform->addElement('text', 'name', get_string('custominstancename', 'enrol'));
+        $mform->setType('name', PARAM_RAW);
 
-        $options = array(ENROL_INSTANCE_ENABLED => get_string('yes'),
-            ENROL_INSTANCE_DISABLED => get_string('no'));
+        $options = array(ENROL_INSTANCE_ENABLED => get_string('yes'), ENROL_INSTANCE_DISABLED => get_string('no'));
         $mform->addElement('select', 'status', get_string('status', 'enrol_notificationeabc'), $options);
 
         // Enrol notifications.
-        $mform->addElement('advcheckbox', 'customint3', get_string('activeenrolalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint3', 'activeenrolalert', 'enrol_notificationeabc');
+        $mform->addElement('advcheckbox', 'customint1', get_string('activeenrolalert', 'enrol_notificationeabc'));
+        $mform->addHelpButton('customint1', 'activeenrolalert', 'enrol_notificationeabc');
 
-        $mform->addElement('editor', 'customtext1', get_string('location', 'enrol_notificationeabc'), null);
+        $mform->addElement('editor', 'customtext1', get_string('enrolmessage', 'enrol_notificationeabc'), null);
         $mform->setType('customtext1', PARAM_RAW);
-        $mform->addHelpButton('customtext1', 'location', 'enrol_notificationeabc');
+        $mform->addHelpButton('customtext1', 'enrolmessage', 'enrol_notificationeabc');
 
         // Unenrol notifications.
-        $mform->addElement('advcheckbox', 'customint4', get_string('activeunenrolalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint4', 'activeunenrolalert', 'enrol_notificationeabc');
+        $mform->addElement('advcheckbox', 'customint2', get_string('activeunenrolalert', 'enrol_notificationeabc'));
+        $mform->addHelpButton('customint2', 'activeunenrolalert', 'enrol_notificationeabc');
 
         $mform->addElement('editor', 'customtext2', get_string('unenrolmessage', 'enrol_notificationeabc'), null);
         $mform->setType('customtext2', PARAM_RAW);
         $mform->addHelpButton('customtext2', 'unenrolmessage', 'enrol_notificationeabc');
 
         // Update enrolment notifications.
-        $mform->addElement('advcheckbox', 'customint5', get_string('activeenrolupdatedalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint5', 'activeenrolupdatedalert', 'enrol_notificationeabc');
+        $mform->addElement('advcheckbox', 'customint3', get_string('activeenrolupdatedalert', 'enrol_notificationeabc'));
+        $mform->addHelpButton('customint3', 'activeenrolupdatedalert', 'enrol_notificationeabc');
 
         $mform->addElement('editor', 'customtext3', get_string('updatedenrolmessage', 'enrol_notificationeabc'), null);
         $mform->setType('customtext3', PARAM_RAW);
@@ -81,9 +81,11 @@ class enrol_notificationeabc_edit_form extends moodleform
         // Email y nombre del remitente.
         $mform->addElement('text', 'customchar1', get_string('emailsender', 'enrol_notificationeabc'));
         $mform->addHelpButton('customchar1', 'emailsender', 'enrol_notificationeabc');
+        $mform->setType('customchar1', PARAM_RAW);
 
         $mform->addElement('text', 'customchar2', get_string('namesender', 'enrol_notificationeabc'));
         $mform->addHelpButton('customchar2', 'namesender', 'enrol_notificationeabc');
+        $mform->setType('customchar2', PARAM_RAW);
 
         $this->add_action_buttons(true, ($instance->id ? null : get_string('addinstance', 'enrol')));
 
@@ -103,9 +105,9 @@ class enrol_notificationeabc_edit_form extends moodleform
             $mform->setDefault('customtext3', array('text' => $instance->customtext3));
             $mform->setDefault('customchar1', $instance->customchar1);
             $mform->setDefault('customchar2', $instance->customchar2);
+            $mform->setDefault('customint1', $instance->customint1);
+            $mform->setDefault('customint2', $instance->customint2);
             $mform->setDefault('customint3', $instance->customint3);
-            $mform->setDefault('customint4', $instance->customint4);
-            $mform->setDefault('customint5', $instance->customint5);
             if (!empty($instance->name)) {
                 $mform->setDefault('name', $instance->name);
             } else {

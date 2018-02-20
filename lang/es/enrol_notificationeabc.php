@@ -25,8 +25,8 @@
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
 
-$string['filelockedmail'] = 'Ud ha sido matriculado en el curso {$a->fullname} ({$a->url})';
-$string['location'] = 'Mensaje personalizado';
+$string['enrolmessagedefault'] = 'Ud ha sido matriculado en el curso {$a->fullname} ({$a->url})';
+$string['enrolmessage'] = 'Mensaje personalizado';
 $string['messageprovider:notificationeabc_enrolment'] = 'Enrol notification messages';
 $string['notificationeabc:manage'] = 'Gestionar notificaciones de matriculación';
 $string['pluginname'] = 'Notificación de Matriculación';
@@ -35,16 +35,16 @@ $string['location_help'] = 'Personalice el mensaje que le llegará a los usuario
 <pre>
 {COURSENAME} = Nombre completo del curso
 {USERNAME} = Nombre de usuario
-{NOMBRE} = Nombre
-{APELLIDO} = Apellido
+{FIRSTNAME} = Nombre
+{LASTNAME} = Apellido
 {URL} = Url del curso
 </pre>';
 $string['fecha_help'] = 'Coloque el periodo por el cual desea que se realice la virificación inicial de usuarios matriculados';
 $string['fecha'] = 'Período para realizar la verificación de usuarios que se matricularon a cursos';
 $string['activar'] = 'Activar verificación inicial';
 $string['activar_help'] = 'Al activarse se verificará, mediante la ejecucion del cron inmediata posterior, los usuarios que fueron matriculados en el periodo establecido arriba';
-$string['activarglobal'] = 'Activar para todo el sitio';
-$string['activarglobal_help'] = 'Activa la notificacion de matriculacion para todo los cursos';
+$string['activarglobalenrolalert'] = 'Activar para todo el sitio';
+$string['activarglobalenrolalert_help'] = 'Activa la notificacion de matriculacion para todo los cursos';
 $string['emailsender'] = 'Email del remitente ';
 $string['emailsender_help'] = 'Por defecto toma el email configurado como el usuario de soporte ';
 $string['namesender'] = 'Nombre del remitente ';
@@ -63,8 +63,8 @@ $string['unenrolmessage_help'] = 'Personalice el mensaje que le llegará a los u
 <pre>
 {COURSENAME} = Nombre completo del curso
 {USERNAME} = Nombre de usuario
-{NOMBRE} = Nombre
-{APELLIDO} = Apellido
+{FIRSTNAME} = Nombre
+{LASTNAME} = Apellido
 {URL} = Url del curso
 </pre>';
 $string['unenrolmessagedefault'] = 'Ud ha sido desmatriculado del curso {$a->fullname} ({$a->url})';
@@ -78,8 +78,8 @@ $string['updatedenrolmessage_help'] = 'Personalice el mensaje que le llegará a 
 <pre>
 {COURSENAME} = Nombre completo del curso
 {USERNAME} = Nombre de usuario
-{NOMBRE} = Nombre
-{APELLIDO} = Apellido
+{FIRSTNAME} = Nombre
+{LASTNAME} = Apellido
 {URL} = Url del curso
 </pre>';
 $string['updatedenrolmessagedefault'] = 'Su matriculacion en el curso {$a->fullname} ha sido actualizada ({$a->url})';

@@ -77,13 +77,13 @@ class enrol_notificationeabc_observer
                 }
             }
             if (!empty($enrol) && $instanceenabled) {
-                $activeunenrolalert = $enrol->customint4;
+                $activeunenrolalert = $enrol->customint2;
             }
 
             if ($activeglobal == 1 && $activeunenrolalert == 1) {
-                $notificationeabc->enviarmail($user, $course, 2);
+                $notificationeabc->send_email($user, $course, 2);
             } else if (!empty($enrol) && !empty($activeunenrolalert) && $instanceenabled) {
-                $notificationeabc->enviarmail($user, $course, 2);
+                $notificationeabc->send_email($user, $course, 2);
             }
         }
     }
@@ -127,13 +127,13 @@ class enrol_notificationeabc_observer
                 }
             }
             if (!empty($enrol) && $instanceenabled) {
-                $activeenrolupdatedalert = $enrol->customint5;
+                $activeenrolupdatedalert = $enrol->customint3;
             }
 
             if ($activeglobal == 1 && $activeenrolupdatedalert == 1) {
-                $notificationeabc->enviarmail($user, $course, 3);
+                $notificationeabc->send_email($user, $course, 3);
             } else if (!empty($enrol) && !empty($activeenrolupdatedalert) && $instanceenabled) {
-                $notificationeabc->enviarmail($user, $course, 3);
+                $notificationeabc->send_email($user, $course, 3);
             }
         }
     }
@@ -160,7 +160,7 @@ class enrol_notificationeabc_observer
 
             $notificationeabc = new enrol_notificationeabc_plugin();
 
-            $activeglobal = $notificationeabc->get_config('activarglobal');
+            $activeglobal = $notificationeabc->get_config('activarglobalenrolalert');
             $activeenrolalert = $notificationeabc->get_config('activeenrolalert');
 
             $enrol = $DB->get_record('enrol', array('enrol' => 'notificationeabc', 'courseid' => $event->courseid));
@@ -177,13 +177,13 @@ class enrol_notificationeabc_observer
             }
 
             if (!empty($enrol) && $instanceenabled) {
-                $activeenrolalert = $enrol->customint3;
+                $activeenrolalert = $enrol->customint1;
             }
 
             if ($activeglobal == 1 && $activeenrolalert == 1) {
-                $notificationeabc->enviarmail($user, $course, 1);
+                $notificationeabc->send_email($user, $course, 1);
             } else if (!empty($enrol) && !empty($activeenrolalert) && $instanceenabled) {
-                $notificationeabc->enviarmail($user, $course, 1);
+                $notificationeabc->send_email($user, $course, 1);
             }
         }
     }

@@ -80,7 +80,13 @@ if ($mform->is_cancelled()) {
 
         $instance->status = $data->status;
         $instance->name = $data->name;
-        $instance->customint1 = $data->customint1;
+
+        if (isset($data->customint1)) {
+            $instance->customint1 = $data->customint1;
+        } else {
+            $instance->customint1 = 0;
+        }
+
         if (isset($data->customint2)) {
             $instance->customint2 = $data->customint2;
         } else {
@@ -91,18 +97,6 @@ if ($mform->is_cancelled()) {
             $instance->customint3 = $data->customint3;
         } else {
             $instance->customint3 = 0;
-        }
-
-        if (isset($data->customint4)) {
-            $instance->customint4 = $data->customint4;
-        } else {
-            $instance->customint4 = 0;
-        }
-
-        if (isset($data->customint5)) {
-            $instance->customint5 = $data->customint5;
-        } else {
-            $instance->customint5 = 0;
         }
 
         $instance->customtext1 = $data->customtext1['text'];
@@ -124,8 +118,6 @@ if ($mform->is_cancelled()) {
             'customint1' => $data->customint1,
             'customint2' => $data->customint2,
             'customint3' => $data->customint3,
-            'customint4' => $data->customint4,
-            'customint5' => $data->customint5,
             'customtext1' => $data->customtext1['text'],
             'customtext2' => $data->customtext2['text'],
             'customtext3' => $data->customtext3['text'],

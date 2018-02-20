@@ -42,8 +42,8 @@ if ($ADMIN->fulltree) {
     );
     $settings->add(new admin_setting_configcheckbox(
         'enrol_notificationeabc/activarglobal',
-        get_string('activarglobal', 'enrol_notificationeabc'),
-        get_string('activarglobal_help', 'enrol_notificationeabc'),
+        get_string('activarglobalenrolalert', 'enrol_notificationeabc'),
+        get_string('activarglobalenrolalert_help', 'enrol_notificationeabc'),
         '')
     );
     $settings->add(new admin_setting_heading(
