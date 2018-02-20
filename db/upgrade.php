@@ -28,12 +28,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- *  Upgrade script
+ * Upgrade script
  * @param int $oldversion
  * @return bool
  */
 function xmldb_enrol_notificationeabc_upgrade($oldversion) {
-    global $CFG, $DB;
-    $dbman = $DB->get_manager();
+    global $DB;
+    // $dbman = $DB->get_manager();
     return true;
 }
