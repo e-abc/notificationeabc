@@ -51,69 +51,67 @@ class enrol_notificationeabc_plugin extends enrol_plugin
      * @param int $type aviso matriculacion, actualizacion o desmatriculacion
      * @return bool
      */
-    public function enviarmail(stdClass $user, stdClass $course, $type) {
+    public function send_email(stdClass $user, stdClass $course, $type) {
         global $CFG, $DB, $COURSE;
 
         $course->url = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
 
         $enrol = $DB->get_record('enrol', array('enrol' => 'notificationeabc', 'courseid' => $course->id, 'status' => 0));
-        $activeglobalenrol = $this->get_config('activarglobal');
+        $activeglobalenrol = $this->get_config('activarglobalenrolalert');
         $activarglobalunenrolalert = $this->get_config('activarglobalunenrolalert');
         $activarglobalenrolupdated = $this->get_config('activarglobalenrolupdated');
-        $mensajeenrol = $this->get_config('location');
-        $plainmensajeenrol = strip_tags($mensajeenrol);
-        $mensajeunenrol = $this->get_config('unenrolmessage');
-        $plainmensajeunenrol = strip_tags($mensajeunenrol);
-        $mensajeupdateenrol = $this->get_config('updatedenrolmessage');
-        $plainmensajeupdateenrol = strip_tags($mensajeupdateenrol);
+        $enrolmessage = $this->get_config('enrolmessage');
+        $plainmensajeenrol = strip_tags($enrolmessage);
+        $unenrolmessage = $this->get_config('unenrolmessage');
+        $plainmensajeunenrol = strip_tags($unenrolmessage);
+        $updatedenrolmessage = $this->get_config('updatedenrolmessage');
+        $plainmensajeupdateenrol = strip_tags($updatedenrolmessage);
 
         switch ((int)$type) {
             case 1:
                 // Si no se configuro un mensaje personalizado se envia uno por defecto basico.
                 if (!empty($enrol) && !empty($enrol->customtext1)) {
-                    $texto = strip_tags($enrol->customtext1);
-                    if (!empty($texto)) {
-                        $mensaje = $this->process_mensaje($enrol->customtext1, $user, $course);
+                    $customtext = strip_tags($enrol->customtext1);
+                    if (!empty($customtext)) {
+                        $message = $this->get_message($enrol->customtext1, $user, $course);
                     } else {
-                        $mensaje = get_string("filelockedmail", "enrol_notificationeabc", $course);
+                        $message = get_string('enrolmessagedefault', 'enrol_notificationeabc', $course);
                     }
 
                 } else if (!empty($activeglobalenrol) && !empty($plainmensajeenrol)) {
-                    $mensaje = $this->process_mensaje($mensajeenrol, $user, $course);
+                    $message = $this->get_message($enrolmessage, $user, $course);
                 } else {
-                    $mensaje = get_string("filelockedmail", "enrol_notificationeabc", $course);
+                    $message = get_string('enrolmessagedefault', 'enrol_notificationeabc', $course);
                 }
                 break;
             case 2:
-
                 if (!empty($enrol) && !empty($enrol->customtext2)) {
-                    $texto = strip_tags($enrol->customtext2);
-                    if (!empty($texto)) {
-                        $mensaje = $this->process_mensaje($enrol->customtext2, $user, $course);
+                    $customtext = strip_tags($enrol->customtext2);
+                    if (!empty($customtext)) {
+                        $message = $this->get_message($enrol->customtext2, $user, $course);
                     } else {
-                        $mensaje = get_string("unenrolmessagedefault", "enrol_notificationeabc", $course);
+                        $message = get_string('unenrolmessagedefault', 'enrol_notificationeabc', $course);
                     }
 
                 } else if (!empty($activarglobalunenrolalert) && !empty($plainmensajeunenrol)) {
-                    $mensaje = $this->process_mensaje($mensajeunenrol, $user, $course);
+                    $message = $this->get_message($unenrolmessage, $user, $course);
                 } else {
-                    $mensaje = get_string("unenrolmessagedefault", "enrol_notificationeabc", $course);
+                    $message = get_string('unenrolmessagedefault', 'enrol_notificationeabc', $course);
                 }
                 break;
             case 3:
-
                 if (!empty($enrol) && !empty($enrol->customtext3)) {
-                    $texto = strip_tags($enrol->customtext3);
-                    if (!empty($texto)) {
-                        $mensaje = $this->process_mensaje($enrol->customtext3, $user, $course);
+                    $customtext = strip_tags($enrol->customtext3);
+                    if (!empty($customtext)) {
+                        $message = $this->get_message($enrol->customtext3, $user, $course);
                     } else {
-                        $mensaje = get_string("updatedenrolmessagedefault", "enrol_notificationeabc", $course);
+                        $message = get_string('updatedenrolmessagedefault', 'enrol_notificationeabc', $course);
                     }
 
                 } else if (!empty($activarglobalenrolupdated) && !empty($plainmensajeupdateenrol)) {
-                    $mensaje = $this->process_mensaje($mensajeupdateenrol, $user, $course);
+                    $message = $this->get_message($updatedenrolmessage, $user, $course);
                 } else {
-                    $mensaje = get_string("updatedenrolmessagedefault", "enrol_notificationeabc", $course);
+                    $message = get_string('updatedenrolmessagedefault', 'enrol_notificationeabc', $course);
                 }
                 break;
 
@@ -149,7 +147,7 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         $eventdata->subject = get_string('subject', 'enrol_notificationeabc');
         $eventdata->fullmessage = '';
         $eventdata->fullmessageformat = FORMAT_HTML;
-        $eventdata->fullmessagehtml = $mensaje;
+        $eventdata->fullmessagehtml = $message;
         $eventdata->smallmessage = '';
         $strdata = new stdClass();
         $strdata->username = $user->username;
@@ -166,19 +164,19 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     // Procesa el mensaje para aceptar marcadores.
     /**
      * Proccess message method
-     * @param String $mensaje el mensaje en bruto
+     * @param String $message el mensaje en bruto
      * @param stdClass $user instancia usuario
      * @param stdClass $course instancia curso
      * @return String el mensaje procesado
      */
-    public function process_mensaje($mensaje, stdClass $user, stdClass $course) {
+    public function get_message($message, stdClass $user, stdClass $course) {
         global $CFG;
-        $m = $mensaje;
+        $m = $message;
         $url = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $course->id));
         $m = str_replace('{COURSENAME}', $course->fullname, $m);
         $m = str_replace('{USERNAME}', $user->username, $m);
-        $m = str_replace('{NOMBRE}', $user->firstname, $m);
-        $m = str_replace('{APELLIDO}', $user->lastname, $m);
+        $m = str_replace('{FIRSTNAME}', $user->firstname, $m);
+        $m = str_replace('{LASTNAME}', $user->lastname, $m);
         $m = str_replace('{URL}', $url, $m);
         return $m;
     }
@@ -208,15 +206,13 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     public function get_instance_defaults() {
 
         $fields = array();
-        $fields['customtext1'] = $this->get_config('location');
+        $fields['customtext1'] = $this->get_config('enrolmessage');
         $fields['customtext2'] = $this->get_config('unenrolmessage');
         $fields['customtext3'] = $this->get_config('updatedenrolmessage');
         $fields['status'] = 1;
-        $fields['customint1'] = 0;
-        $fields['customint2'] = 0;
-        $fields['customint3'] = $this->get_config('activeenrolalert');
-        $fields['customint4'] = $this->get_config('activeunenrolalert');
-        $fields['customint5'] = $this->get_config('activeenrolupdatedalert');
+        $fields['customint1'] = $this->get_config('activeenrolalert');
+        $fields['customint2'] = $this->get_config('activeunenrolalert');
+        $fields['customint3'] = $this->get_config('activeenrolupdatedalert');
         $fields['customchar1'] = $this->get_config('emailsender');
         $fields['customchar2'] = $this->get_config('namesender');
 
@@ -241,16 +237,16 @@ class enrol_notificationeabc_plugin extends enrol_plugin
 
         if (has_capability('enrol/notificationeabc:manage', $context)) {
             $editlink = new moodle_url(
-                "/enrol/notificationeabc/edit.php",
+                '/enrol/notificationeabc/edit.php',
                 array('courseid' => $instance->courseid, 'id' => $instance->id)
             );
             $icons[] = $OUTPUT->action_icon(
                 $editlink,
                 new pix_icon(
-                    'i/edit',
+                    't/edit',
                     get_string('edit'),
                     'core',
-                    array('class' => 'icon')
+                    array('class' => 'icon iconsmall')
                 )
             );
         }
@@ -270,5 +266,15 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         return $icons;
     }
 
+    /**
+     * Is it possible to hide/show enrol instance via standard UI?
+     *
+     * @param stdClass $instance
+     * @return bool
+     */
+    public function can_hide_show_instance($instance) {
+        $context = context_course::instance($instance->courseid);
+        return has_capability('enrol/notificationeabc:config', $context);
+    }
 } // End of class.
 
