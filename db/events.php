@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Notificationeabc enrolment plugin.
+ * Notification enrolment plugin.
  *
  * This plugin notifies users when an event occurs on their enrolments (enrol, unenrol, update enrolment)
  *
- * @package    enrol_notificationeabc
+ * @package    enrol_notification
  * @copyright  2017 e-ABC Learning
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
@@ -31,17 +31,17 @@ $observers = array(
 
     array(
         'eventname'   => '\core\event\user_enrolment_deleted',
-        'callback'    => 'enrol_notificationeabc_observer::user_unenroled',
+        'callback'    => 'enrol_notification_observer::user_unenrolled',
     ),
 
     array(
         'eventname'   => '\core\event\user_enrolment_created',
-        'callback'    => 'enrol_notificationeabc_observer::user_enroled',
+        'callback'    => 'enrol_notification_observer::user_enrolled',
     ),
 
     array(
         'eventname'   => '\core\event\user_enrolment_updated',
-        'callback'    => 'enrol_notificationeabc_observer::user_updated',
+        'callback'    => 'enrol_notification_observer::user_updated',
     )
 
 );

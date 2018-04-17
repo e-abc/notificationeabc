@@ -24,11 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
-defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018022200;
-$plugin->requires  = 2016120503;
-$plugin->component = 'enrol_notification';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '3.2.0.1';
-$plugin->cron      = 30;
+$string['subject'] = 'Notifica sullo stato di iscrizione';
+$string['enrolmessagedefault'] = 'Sei stato iscritto al corso "{COURSENAME}" all\'indirizzo: {URL}';
+$string['unenrolmessagedefault'] = 'Sei stato disiscritto dal corso "{COURSENAME}" all\'indirizzo: {URL}';
+$string['enrolmentupdatemessagedefault'] = 'La tua iscrizione al corso {COURSENAME} all\'indirizzo: {URL} è stata modificata';

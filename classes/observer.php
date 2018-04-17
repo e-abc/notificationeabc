@@ -15,81 +15,114 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Notificationeabc enrolment plugin.
+ * Notification enrolment plugin.
  *
  * This plugin notifies users when an event occurs on their enrolments (enrol, unenrol, update enrolment)
  *
- * @package    enrol_notificationeabc
+ * @package    enrol_notification
  * @copyright  2017 e-ABC Learning
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot . '/enrol/notificationeabc/lib.php');
+require_once($CFG->dirroot . '/enrol/notification/lib.php');
 
 /**
  * Observer definition
  *
- * @package    enrol_notificationeabc
+ * @package    enrol_notification
  * @copyright  2017 e-ABC Learning
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
-class enrol_notificationeabc_observer
+class enrol_notification_observer
 {
 
     /**
-     * hook enrol event
-     * @param \core\event\user_enrolment_deleted $event
+     * hook enrolment event
+     * @param \core\event\user_enrolment_created $event
      */
-    public static function user_unenroled(\core\event\user_enrolment_deleted $event) {
+    public static function user_enrolled(\core\event\user_enrolment_created $event) {
         global $DB;
 
-        // Validate status plugin.
+        // Validate plugin status in system context.
         $enableplugins = get_config(null, 'enrol_plugins_enabled');
         $enableplugins = explode(',', $enableplugins);
-        $enabled = false;
-        foreach ($enableplugins as $enableplugin) {
-            if ($enableplugin === 'notificationeabc') {
-                $enabled = true;
-            }
-        }
+        $enabled = in_array('notification', $enableplugins);
+
         if ($enabled) {
+            $notification = new enrol_notification_plugin();
+
             $user = $DB->get_record('user', array('id' => $event->relateduserid));
             $course = $DB->get_record('course', array('id' => $event->courseid));
 
-            $notificationeabc = new enrol_notificationeabc_plugin();
+            $globalenrolalert = $notification->get_config('globalenrolalert');
 
-            $activeglobal = $notificationeabc->get_config('activarglobalunenrolalert');
-            $activeunenrolalert = $notificationeabc->get_config('activeunenrolalert');
+            $enrol = $DB->get_record('enrol', array('enrol' => 'notification', 'courseid' => $event->courseid));
 
-            $enrol = $DB->get_record('enrol', array('enrol' => 'notificationeabc', 'courseid' => $event->courseid));
-
-            /*
-            * check the instance status
-            * status = 0 enabled and status = 1 disabled
-            */
-            $instanceenabled = false;
-            if (!empty($enrol)) {
-                if (!$enrol->status) {
-                    $instanceenabled = true;
+            if (empty($enrol)) {
+                // This course does not use this enrolment plugin.
+                if (!empty($globalenrolalert)) {
+                    // But global use of enrolalert was requested at site level for each course.
+                    $notification->send_email($user, $course, 1);
                 }
-            }
-            if (!empty($enrol) && $instanceenabled) {
-                $activeunenrolalert = $enrol->customint4;
-            }
-
-            if ($activeglobal == 1 && $activeunenrolalert == 1) {
-                $notificationeabc->enviarmail($user, $course, 2);
-            } else if (!empty($enrol) && !empty($activeunenrolalert) && $instanceenabled) {
-                $notificationeabc->enviarmail($user, $course, 2);
+            } else {
+                // This course uses this enrolment plugin.
+                // Check the instance status. Take care: status = 0 enabled; status = 1 disabled.
+                if (empty($enrol->status)) {
+                    $localenrolalert = $enrol->customint1;
+                    if (!empty($localenrolalert)) {
+                        $notification->send_email($user, $course, 1);
+                    }
+                }
             }
         }
     }
 
     /**
-     * hook user update event
+     * hook unenrolment event
+     * @param \core\event\user_enrolment_deleted $event
+     */
+    public static function user_unenrolled(\core\event\user_enrolment_deleted $event) {
+        global $DB;
+
+        // Validate status plugin.
+        $enableplugins = get_config(null, 'enrol_plugins_enabled');
+        $enableplugins = explode(',', $enableplugins);
+        $enabled = in_array('notification', $enableplugins);
+
+        if ($enabled) {
+            $notification = new enrol_notification_plugin();
+
+            $user = $DB->get_record('user', array('id' => $event->relateduserid));
+            $course = $DB->get_record('course', array('id' => $event->courseid));
+
+            $globalunenrolalert = $notification->get_config('globalunenrolalert');
+
+            $enrol = $DB->get_record('enrol', array('enrol' => 'notification', 'courseid' => $event->courseid));
+
+            if (empty($enrol)) {
+                // This course does not use this enrolment plugin.
+                if (!empty($globalunenrolalert)) {
+                    // But global use of unenrolalert was requested at site level for each course.
+                    $notification->send_email($user, $course, 2);
+                }
+            } else {
+                // This course uses this enrolment plugin.
+                // Check the instance status. Take care: status = 0 enabled; status = 1 disabled.
+                if (empty($enrol->status)) {
+                    $localunenrolalert = $enrol->customint2;
+                    if (!empty($localunenrolalert)) {
+                        $notification->send_email($user, $course, 2);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * hook user enrolment update event
      * @param \core\event\user_enrolment_updated $event
      */
     public static function user_updated(\core\event\user_enrolment_updated $event) {
@@ -98,92 +131,33 @@ class enrol_notificationeabc_observer
         // Validate plugin status in system context.
         $enableplugins = get_config(null, 'enrol_plugins_enabled');
         $enableplugins = explode(',', $enableplugins);
-        $enabled = false;
-        foreach ($enableplugins as $enableplugin) {
-            if ($enableplugin === 'notificationeabc') {
-                $enabled = true;
-            }
-        }
+        $enabled = in_array('notification', $enableplugins);
+
         if ($enabled) {
+            $notification = new enrol_notification_plugin();
+
             $user = $DB->get_record('user', array('id' => $event->relateduserid));
             $course = $DB->get_record('course', array('id' => $event->courseid));
 
-            $notificationeabc = new enrol_notificationeabc_plugin();
+            $globalenrolmentupdatealert = $notification->get_config('globalenrolmentupdatealert');
 
-            $activeglobal = $notificationeabc->get_config('activarglobalenrolupdated');
-            $activeenrolupdatedalert = $notificationeabc->get_config('activeenrolupdatedalert');
+            $enrol = $DB->get_record('enrol', array('enrol' => 'notification', 'courseid' => $event->courseid));
 
-            // Plugin instance in course.
-            $enrol = $DB->get_record('enrol', array('enrol' => 'notificationeabc', 'courseid' => $event->courseid));
-
-            /*
-            * check the instance status
-            * status = 0 enabled and status = 1 disabled
-            */
-            $instanceenabled = false;
-            if (!empty($enrol)) {
-                if (!$enrol->status) {
-                    $instanceenabled = true;
+            if (empty($enrol)) {
+                // This course does not use this enrolment plugin.
+                if (!empty($globalenrolmentupdatealert)) {
+                    // But global use of enrolmentupdatealert was requested at site level for each course.
+                    $notification->send_email($user, $course, 3);
                 }
-            }
-            if (!empty($enrol) && $instanceenabled) {
-                $activeenrolupdatedalert = $enrol->customint5;
-            }
-
-            if ($activeglobal == 1 && $activeenrolupdatedalert == 1) {
-                $notificationeabc->enviarmail($user, $course, 3);
-            } else if (!empty($enrol) && !empty($activeenrolupdatedalert) && $instanceenabled) {
-                $notificationeabc->enviarmail($user, $course, 3);
-            }
-        }
-    }
-
-    /**
-     * hook enrolment event
-     * @param \core\event\user_enrolment_created $event
-     */
-    public static function user_enroled(\core\event\user_enrolment_created $event) {
-        global $DB;
-
-        // Validate plugin status in system context.
-        $enableplugins = get_config(null, 'enrol_plugins_enabled');
-        $enableplugins = explode(',', $enableplugins);
-        $enabled = false;
-        foreach ($enableplugins as $enableplugin) {
-            if ($enableplugin === 'notificationeabc') {
-                $enabled = true;
-            }
-        }
-        if ($enabled) {
-            $user = $DB->get_record('user', array('id' => $event->relateduserid));
-            $course = $DB->get_record('course', array('id' => $event->courseid));
-
-            $notificationeabc = new enrol_notificationeabc_plugin();
-
-            $activeglobal = $notificationeabc->get_config('activarglobal');
-            $activeenrolalert = $notificationeabc->get_config('activeenrolalert');
-
-            $enrol = $DB->get_record('enrol', array('enrol' => 'notificationeabc', 'courseid' => $event->courseid));
-
-            /*
-            * check the instance status
-            * status = 0 enabled and status = 1 disabled
-            */
-            $instanceenabled = false;
-            if (!empty($enrol)) {
-                if (!$enrol->status) {
-                    $instanceenabled = true;
+            } else {
+                // This course uses this enrolment plugin.
+                // Check the instance status. Take care: status = 0 enabled; status = 1 disabled.
+                if (empty($enrol->status)) {
+                    $localenrolmentupdatealert = $enrol->customint3;
+                    if (!empty($localenrolmentupdatealert)) {
+                        $notification->send_email($user, $course, 3);
+                    }
                 }
-            }
-
-            if (!empty($enrol) && $instanceenabled) {
-                $activeenrolalert = $enrol->customint3;
-            }
-
-            if ($activeglobal == 1 && $activeenrolalert == 1) {
-                $notificationeabc->enviarmail($user, $course, 1);
-            } else if (!empty($enrol) && !empty($activeenrolalert) && $instanceenabled) {
-                $notificationeabc->enviarmail($user, $course, 1);
             }
         }
     }
