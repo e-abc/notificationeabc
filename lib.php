@@ -45,78 +45,111 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     // Funcion que envia las notificaciones a los usuarios.
 
     /**
-     * Send mail method
-     * @param stdClass $user user instance
-     * @param stdClass $course course instance
-     * @param int $type notice enrollment, update or unenrollment
+     *  Send mail method
+     * @param stdClass $user instancia usuario
+     * @param stdClass $course instancia curso
+     * @param int $type aviso matriculacion, actualizacion o desmatriculacion
      * @return bool
      */
-    public function send_email(stdClass $user, stdClass $course, $type) {
-        global $CFG, $DB;
+    public function enviarmail(stdClass $user, stdClass $course, $type) {
+        global $CFG, $DB, $COURSE;
 
         $course->url = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
 
         $enrol = $DB->get_record('enrol', array('enrol' => 'notificationeabc', 'courseid' => $course->id, 'status' => 0));
-
-        $pluginconfig = get_config('enrol_notificationeabc');
-        $enrolalert = $pluginconfig->enrolalert;
-        $globalenrolalert = $pluginconfig->globalenrolalert;
-
-        $unenrolalert = $pluginconfig->unenrolalert;
-        $globalunenrolalert = $pluginconfig->globalunenrolalert;
-
-        $enrolupdatealert = $pluginconfig->enrolupdatealert;
-        $globalenrolupdatealert = $pluginconfig->globalenrolupdatealert;
-
-        if (!$enrolmessage = $enrol->customtext1) { // Corse level.
-            if (!$enrolmessage = $pluginconfig->enrolmessage) { // Plugin level.
-                $enrolmessage = get_string('enrolmessagedefault', 'enrol_notificationeabc', $course);
-            }
-        }
-        if (!$unenrolmessage = $enrol->customtext2) { // Corse level.
-            if (!$unenrolmessage = $pluginconfig->unenrolmessage) { // Plugin level.
-                $unenrolmessage = get_string('unenrolmessagedefault', 'enrol_notificationeabc', $course);
-            }
-        }
-        if (!$enrolupdatemessage = $enrol->customtext3) { // Corse level.
-            if (!$enrolupdatemessage = $pluginconfig->enrolupdatemessage) { // Plugin level.
-                $enrolupdatemessage = get_string('enrolupdatemessagedefault', 'enrol_notificationeabc', $course);
-            }
-        }
+        $activeglobalenrol = $this->get_config('activarglobal');
+        $activarglobalunenrolalert = $this->get_config('activarglobalunenrolalert');
+        $activarglobalenrolupdated = $this->get_config('activarglobalenrolupdated');
+        $mensajeenrol = $this->get_config('location');
+        $plainmensajeenrol = strip_tags($mensajeenrol);
+        $mensajeunenrol = $this->get_config('unenrolmessage');
+        $plainmensajeunenrol = strip_tags($mensajeunenrol);
+        $mensajeupdateenrol = $this->get_config('updatedenrolmessage');
+        $plainmensajeupdateenrol = strip_tags($mensajeupdateenrol);
 
         switch ((int)$type) {
             case 1:
-                if (!empty($enrolalert) || !empty($globalenrolalert)) {
-                    $message = $this->get_message($enrolmessage, $user, $course);
+                // Si no se configuro un mensaje personalizado se envia uno por defecto basico.
+                if (!empty($enrol) && !empty($enrol->customtext1)) {
+                    $texto = strip_tags($enrol->customtext1);
+                    if (!empty($texto)) {
+                        $mensaje = $this->process_mensaje($enrol->customtext1, $user, $course);
+                    } else {
+                        $mensaje = get_string("filelockedmail", "enrol_notificationeabc", $course);
+                    }
+
+                } else if (!empty($activeglobalenrol) && !empty($plainmensajeenrol)) {
+                    $mensaje = $this->process_mensaje($mensajeenrol, $user, $course);
+                } else {
+                    $mensaje = get_string("filelockedmail", "enrol_notificationeabc", $course);
                 }
                 break;
             case 2:
-                if (!empty($unenrolalert) || !empty($globalunenrolalert)) {
-                    $message = $this->get_message($unenrolmessage, $user, $course);
+
+                if (!empty($enrol) && !empty($enrol->customtext2)) {
+                    $texto = strip_tags($enrol->customtext2);
+                    if (!empty($texto)) {
+                        $mensaje = $this->process_mensaje($enrol->customtext2, $user, $course);
+                    } else {
+                        $mensaje = get_string("unenrolmessagedefault", "enrol_notificationeabc", $course);
+                    }
+
+                } else if (!empty($activarglobalunenrolalert) && !empty($plainmensajeunenrol)) {
+                    $mensaje = $this->process_mensaje($mensajeunenrol, $user, $course);
+                } else {
+                    $mensaje = get_string("unenrolmessagedefault", "enrol_notificationeabc", $course);
                 }
                 break;
             case 3:
-                if (!empty($enrolupdatealert) || !empty($globalenrolupdatealert)) {
-                    $message = $this->get_message($enrolupdatemessage, $user, $course);
+
+                if (!empty($enrol) && !empty($enrol->customtext3)) {
+                    $texto = strip_tags($enrol->customtext3);
+                    if (!empty($texto)) {
+                        $mensaje = $this->process_mensaje($enrol->customtext3, $user, $course);
+                    } else {
+                        $mensaje = get_string("updatedenrolmessagedefault", "enrol_notificationeabc", $course);
+                    }
+
+                } else if (!empty($activarglobalenrolupdated) && !empty($plainmensajeupdateenrol)) {
+                    $mensaje = $this->process_mensaje($mensajeupdateenrol, $user, $course);
+                } else {
+                    $mensaje = get_string("updatedenrolmessagedefault", "enrol_notificationeabc", $course);
                 }
                 break;
+
             default:
                 break;
         }
 
-        $supportuser = \core_user::get_support_user();
+        $soporte = core_user::get_support_user();
+
+        $sender = get_admin();
+
+        if (!empty($enrol) && !empty($enrol->customchar1)) {
+            $sender->email = $enrol->customchar1;
+        } else {
+            $sender->email = $soporte->email;
+        }
+
+        if (!empty($enrol) && !empty($enrol->customchar2)) {
+            $sender->firstname = $enrol->customchar2;
+        } else {
+            $sender->firstname = $soporte->firstname;
+        }
+
+        $sender->lastname = $soporte->lastname;
 
         $eventdata = new \core\message\message();
         $eventdata->courseid = $course->id;
         $eventdata->modulename = 'moodle';
         $eventdata->component = 'enrol_notificationeabc';
         $eventdata->name = 'notificationeabc_enrolment';
-        $eventdata->userfrom = $supportuser;
+        $eventdata->userfrom = $sender;
         $eventdata->userto = $user->id;
         $eventdata->subject = get_string('subject', 'enrol_notificationeabc');
         $eventdata->fullmessage = '';
         $eventdata->fullmessageformat = FORMAT_HTML;
-        $eventdata->fullmessagehtml = $message;
+        $eventdata->fullmessagehtml = $mensaje;
         $eventdata->smallmessage = '';
         $strdata = new stdClass();
         $strdata->username = $user->username;
@@ -133,22 +166,20 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     // Procesa el mensaje para aceptar marcadores.
     /**
      * Proccess message method
-     * @param String $message the raw message
-     * @param stdClass $user user instance
-     * @param stdClass $course course instance
-     * @return String the processed message
+     * @param String $mensaje el mensaje en bruto
+     * @param stdClass $user instancia usuario
+     * @param stdClass $course instancia curso
+     * @return String el mensaje procesado
      */
-    public function get_message($message, stdClass $user, stdClass $course) {
+    public function process_mensaje($mensaje, stdClass $user, stdClass $course) {
         global $CFG;
-
-        $m = $message;
+        $m = $mensaje;
         $url = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $course->id));
         $m = str_replace('{COURSENAME}', $course->fullname, $m);
         $m = str_replace('{USERNAME}', $user->username, $m);
-        $m = str_replace('{FIRSTNAME}', $user->firstname, $m);
-        $m = str_replace('{LASTNAME}', $user->lastname, $m);
+        $m = str_replace('{NOMBRE}', $user->firstname, $m);
+        $m = str_replace('{APELLIDO}', $user->lastname, $m);
         $m = str_replace('{URL}', $url, $m);
-
         return $m;
     }
 
@@ -160,14 +191,12 @@ class enrol_notificationeabc_plugin extends enrol_plugin
      */
     public function get_newinstance_link($courseid) {
         global $DB;
-
         $numenrol = $DB->count_records('enrol', array('courseid' => $courseid, 'enrol' => 'notificationeabc'));
         $context = context_course::instance($courseid, MUST_EXIST);
 
         if (!has_capability('enrol/notificationeabc:manage', $context) or $numenrol >= 1) {
             return null;
         }
-
         return new moodle_url('/enrol/notificationeabc/edit.php', array('courseid' => $courseid));
     }
 
@@ -179,13 +208,17 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     public function get_instance_defaults() {
 
         $fields = array();
-        $fields['enrolmessage'] = $this->get_config('enrolmessage');
-        $fields['unenrolmessage'] = $this->get_config('unenrolmessage');
-        $fields['enrolupdatemessage'] = $this->get_config('enrolupdatemessage');
+        $fields['customtext1'] = $this->get_config('location');
+        $fields['customtext2'] = $this->get_config('unenrolmessage');
+        $fields['customtext3'] = $this->get_config('updatedenrolmessage');
         $fields['status'] = 1;
-        $fields['enrolalert'] = $this->get_config('enrolalert');
-        $fields['unenrolalert'] = $this->get_config('unenrolalert');
-        $fields['enrolupdatealert'] = $this->get_config('enrolupdatealert');
+        $fields['customint1'] = 0;
+        $fields['customint2'] = 0;
+        $fields['customint3'] = $this->get_config('activeenrolalert');
+        $fields['customint4'] = $this->get_config('activeunenrolalert');
+        $fields['customint5'] = $this->get_config('activeenrolupdatedalert');
+        $fields['customchar1'] = $this->get_config('emailsender');
+        $fields['customchar2'] = $this->get_config('namesender');
 
         return $fields;
     }
@@ -199,49 +232,32 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     public function get_action_icons(stdClass $instance) {
         global $OUTPUT;
 
+        if ($instance->enrol !== 'notificationeabc') {
+            throw new coding_exception('invalid enrol instance!');
+        }
         $context = context_course::instance($instance->courseid);
 
         $icons = array();
 
         if (has_capability('enrol/notificationeabc:manage', $context)) {
             $editlink = new moodle_url(
-                '/enrol/editinstance.php',
-                array('courseid' => $instance->courseid, 'id' => $instance->id, 'type' => 'notificationeabc')
+                "/enrol/notificationeabc/edit.php",
+                array('courseid' => $instance->courseid, 'id' => $instance->id)
             );
             $icons[] = $OUTPUT->action_icon(
                 $editlink,
-                new pix_icon( 't/edit', get_string('edit'), 'core', array('class' => 'icon iconsmall'))
+                new pix_icon(
+                    'i/edit',
+                    get_string('edit'),
+                    'core',
+                    array('class' => 'icon')
+                )
             );
         }
 
         return $icons;
     }
 
-    /**
-     * Is it possible to delete enrol instance via standard UI?
-     *
-     * @param object $instance
-     * @return bool
-     */
-    public function can_delete_instance($instance) {
-        $context = context_course::instance($instance->courseid);
-        if (!has_capability('enrol/notificationeabc:manage', $context)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Is it possible to hide/show enrol instance via standard UI?
-     *
-     * @param stdClass $instance
-     * @return bool
-     */
-    public function can_hide_show_instance($instance) {
-        $context = context_course::instance($instance->courseid);
-        return has_capability('enrol/notificationeabc:config', $context);
-    }
 
     /**
      * get info icons method
@@ -254,105 +270,5 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         return $icons;
     }
 
-    /**
-     * We are a good plugin and don't invent our own UI/validation code path.
-     *
-     * @return boolean
-     */
-    public function use_standard_editing_ui() {
-        return true;
-    }
-
-    /**
-     * Return an array of valid options for the status.
-     *
-     * @return array
-     */
-    protected function get_status_options() {
-        $options = array(ENROL_INSTANCE_ENABLED  => get_string('yes'),
-                         ENROL_INSTANCE_DISABLED => get_string('no'));
-        return $options;
-    }
-
-    /**
-     * Add elements to the edit instance form.
-     *
-     * @param stdClass $instance
-     * @param MoodleQuickForm $mform
-     * @param context $context
-     * @return bool
-     */
-    public function edit_instance_form($instance, MoodleQuickForm $mform, $context) {
-
-        $textareaparams = array('rows' => 8, 'cols' => 60);
-
-        $mform->addElement('text', 'name', get_string('custominstancename', 'enrol'));
-        $mform->setType('name', PARAM_RAW);
-        $mform->setDefault('name', get_string('pluginname', 'enrol_notificationeabc'));
-
-        $options = $this->get_status_options();
-        $mform->addElement('select', 'status', get_string('status', 'enrol_notificationeabc'), $options);
-        $mform->setDefault('status', $this->get_config('status'));
-
-        // Enrol notifications -> 'enrolalert'.
-        $mform->addElement('advcheckbox', 'customint1', get_string('enrolalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint1', 'enrolalert', 'enrol_notificationeabc');
-        $mform->setDefault('customint1', $this->get_config('enrolalert'));
-
-        // Enrol notifications -> 'enrolmessage'
-        $mform->addElement('textarea', 'customtext1', get_string('enrolmessage', 'enrol_notificationeabc'), $textareaparams);
-        $mform->addHelpButton('customtext1', 'enrolmessage', 'enrol_notificationeabc');
-        $mform->setType('customtext1', PARAM_RAW);
-        $mform->setDefault('customtext1', $this->get_config('enrolmessage'));
-
-        // Unenrol notifications -> 'unenrolalert'.
-        $mform->addElement('advcheckbox', 'customint2', get_string('unenrolalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint2', 'unenrolalert', 'enrol_notificationeabc');
-        $mform->setDefault('customint2', $this->get_config('unenrolalert'));
-
-        // Unenrol notifications -> 'unenrolmessage'.
-        $mform->addElement('textarea', 'customtext2', get_string('unenrolmessage', 'enrol_notificationeabc'), $textareaparams);
-        $mform->addHelpButton('customtext2', 'unenrolmessage', 'enrol_notificationeabc');
-        $mform->setType('customtext2', PARAM_RAW);
-        $mform->setDefault('customtext2', $this->get_config('unenrolmessage'));
-
-        // Update enrolment notifications -> 'enrolupdatealert'.
-        $mform->addElement('advcheckbox', 'customint3', get_string('enrolupdatealert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint3', 'enrolupdatealert', 'enrol_notificationeabc');
-        $mform->setDefault('customint3', $this->get_config('enrolupdatealert'));
-
-        // Update enrolment -> 'enrolupdatemessage'.
-        $mform->addElement('textarea', 'customtext3', get_string('enrolupdatemessage', 'enrol_notificationeabc'), $textareaparams);
-        $mform->addHelpButton('customtext3', 'enrolupdatemessage', 'enrol_notificationeabc');
-        $mform->setType('customtext3', PARAM_RAW);
-        $mform->setDefault('customtext3', $this->get_config('enrolupdatemessage'));
-
-        if (enrol_accessing_via_instance($instance)) {
-            $warntext = get_string('instanceeditselfwarningtext', 'core_enrol');
-            $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'), $warntext);
-        }
-    }
-
-    /**
-     * Perform custom validation of the data used to edit the instance.
-     *
-     * @param array $data array of ("fieldname"=>value) of submitted data
-     * @param array $files array of uploaded files "element_name"=>tmp_file_path
-     * @param object $instance The instance loaded from the DB
-     * @param context $context The context of the instance we are editing
-     * @return array of "element_name"=>"error_description" if there are errors,
-     *         or an empty array if everything is OK.
-     * @return void
-     */
-    public function edit_instance_validation($data, $files, $instance, $context) {
-        $errors = array();
-        $validstatus = array_keys($this->get_status_options());
-        $tovalidate = array('status' => $validstatus);
-
-        $typeerrors = $this->validate_param_types($data, $tovalidate);
-        $errors = array_merge($errors, $typeerrors);
-
-        return $errors;
-    }
 } // End of class.
 

@@ -31,12 +31,12 @@ $observers = array(
 
     array(
         'eventname'   => '\core\event\user_enrolment_deleted',
-        'callback'    => 'enrol_notificationeabc_observer::user_unenrolled',
+        'callback'    => 'enrol_notificationeabc_observer::user_unenroled',
     ),
 
     array(
         'eventname'   => '\core\event\user_enrolment_created',
-        'callback'    => 'enrol_notificationeabc_observer::user_enrolled',
+        'callback'    => 'enrol_notificationeabc_observer::user_enroled',
     ),
 
     array(
