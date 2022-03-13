@@ -33,65 +33,83 @@ if ($ADMIN->fulltree) {
     // General settings.
 
     // Enrol notification.
+    // $settings->add(new admin_setting_configcheckbox(
+    //     'enrol_notificationeabc/activeenrolalert',
+    //     get_string('activeenrolalert', 'enrol_notificationeabc'),
+    //     get_string('activeenrolalert_help', 'enrol_notificationeabc'),
+    //     '',
+    //     '1')
+    // );
     $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/enrolalert',
-        get_string('enrolalert', 'enrol_notificationeabc'),
-        get_string('enrolalert_help', 'enrol_notificationeabc'),
-        '',
-        '1')
-    );
-    $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/globalenrolalert',
-        get_string('globalenrolalert', 'enrol_notificationeabc'),
-        get_string('globalenrolalert_help', 'enrol_notificationeabc'),
+        'enrol_notificationeabc/activarglobal',
+        get_string('activarglobal', 'enrol_notificationeabc'),
+        get_string('activarglobal_help', 'enrol_notificationeabc'),
         '')
     );
-    $settings->add(new admin_setting_configtextarea(
-        'enrol_notificationeabc/enrolmessage',
-        get_string('enrolmessage', 'enrol_notificationeabc'),
-        get_string('enrolmessage_help', 'enrol_notificationeabc'),
-        null)
+    $settings->add(new admin_setting_heading(
+        'enrol_notificationeabc_settings',
+        '',
+        get_string('pluginname_desc', 'enrol_notificationeabc'),
+        '')
+    );
+    $settings->add(new admin_setting_confightmleditor(
+        'enrol_notificationeabc/location',
+        get_string('location', 'enrol_notificationeabc'),
+        get_string('location_help', 'enrol_notificationeabc'),
+        '')
     );
 
     // Unenrol notification.
+    // $settings->add(new admin_setting_configcheckbox(
+    //     'enrol_notificationeabc/activeunenrolalert',
+    //     get_string('activeunenrolalert', 'enrol_notificationeabc'),
+    //     get_string('activeunenrolalert_help', 'enrol_notificationeabc'),
+    //     '',
+    //     '1')
+    // );
     $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/unenrolalert',
-        get_string('unenrolalert', 'enrol_notificationeabc'),
-        get_string('unenrolalert_help', 'enrol_notificationeabc'),
-        '',
-        '1')
-    );
-    $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/globalunenrolalert',
-        get_string('globalunenrolalert', 'enrol_notificationeabc'),
-        get_string('globalunenrolalert_help', 'enrol_notificationeabc'),
+        'enrol_notificationeabc/activarglobalunenrolalert',
+        get_string('activarglobalunenrolalert', 'enrol_notificationeabc'),
+        get_string('activarglobalunenrolalert_help', 'enrol_notificationeabc'),
         '')
     );
-    $settings->add(new admin_setting_configtextarea(
+    $settings->add(new admin_setting_confightmleditor(
         'enrol_notificationeabc/unenrolmessage',
         get_string('unenrolmessage', 'enrol_notificationeabc'),
         get_string('unenrolmessage_help', 'enrol_notificationeabc'),
-        null)
+        '')
     );
 
     // Update enrol notification.
+    // $settings->add(new admin_setting_configcheckbox(
+    //     'enrol_notificationeabc/activeenrolupdatedalert',
+    //     get_string('activeenrolupdatedalert', 'enrol_notificationeabc'),
+    //     get_string('activeenrolupdatedalert_help', 'enrol_notificationeabc'),
+    //     '',
+    //     '1')
+    // );
     $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/enrolupdatealert',
-        get_string('enrolupdatealert', 'enrol_notificationeabc'),
-        get_string('enrolupdatealert_help', 'enrol_notificationeabc'),
-        '',
-        '1')
-    );
-    $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/globalenrolupdatealert',
-        get_string('globalenrolupdatealert', 'enrol_notificationeabc'),
-        get_string('globalenrolupdatealert_help', 'enrol_notificationeabc'),
+        'enrol_notificationeabc/activarglobalenrolupdated',
+        get_string('activarglobalenrolupdated', 'enrol_notificationeabc'),
+        get_string('activarglobalenrolupdated_help', 'enrol_notificationeabc'),
         '')
     );
-    $settings->add(new admin_setting_configtextarea(
-        'enrol_notificationeabc/enrolupdatemessage',
-        get_string('enrolupdatemessage', 'enrol_notificationeabc'),
-        get_string('enrolupdatemessage_help', 'enrol_notificationeabc'),
-        null)
+    $settings->add(new admin_setting_confightmleditor(
+        'enrol_notificationeabc/updatedenrolmessage',
+        get_string('updatedenrolmessage', 'enrol_notificationeabc'),
+        get_string('updatedenrolmessage_help', 'enrol_notificationeabc'),
+        '')
+    );
+    $settings->add(new admin_setting_configtext(
+        'enrol_notificationeabc/emailsender',
+        get_string('emailsender', 'enrol_notificationeabc'),
+        get_string('emailsender_help', 'enrol_notificationeabc'),
+        '')
+    );
+    $settings->add(new admin_setting_configtext(
+        'enrol_notificationeabc/namesender',
+        get_string('namesender', 'enrol_notificationeabc'),
+        get_string('namesender_help', 'enrol_notificationeabc'),
+        '')
     );
 }
