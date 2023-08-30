@@ -51,11 +51,11 @@ $string['namesender'] = 'Nombre del remitente ';
 $string['namesender_help'] = 'Por defecto toma el nombre configurado como el usuario de soporte ';
 $string['status'] = 'Activar notification de matriculación';
 $string['subject'] = 'Notificación de Matriculación';
-$string['activeenrolalert'] = 'Activar aviso de matriculación';
-$string['activeenrolalert_help'] = 'Activar aviso de matriculación';
+$string['activecustomenrolalert'] = 'Activar aviso de matriculación personalizado';
+$string['activecustomenrolalert_help'] = 'Activar aviso de matriculación personalizado';
 // Aviso de desmatriculacion.
-$string['activeunenrolalert'] = 'Activar aviso de desmatriculacion';
-$string['activeunenrolalert_help'] = 'Activar aviso de desmatriculacion';
+$string['activecustomunenrolalert'] = 'Activar aviso de desmatriculacion personalizado';
+$string['activecustomunenrolalert_help'] = 'Activar aviso de desmatriculacion personalizado';
 $string['activarglobalunenrolalert'] = 'Activar para todo el sitio';
 $string['activarglobalunenrolalert_help'] = 'Activar la notificacion de desmatriculacion para todo el sitio';
 $string['unenrolmessage'] = 'Mensaje personalizado';
@@ -69,8 +69,8 @@ $string['unenrolmessage_help'] = 'Personalice el mensaje que le llegará a los u
 </pre>';
 $string['unenrolmessagedefault'] = 'Ud ha sido desmatriculado del curso {$a->fullname} ({$a->url})';
 // Aviso de actualizacion de matriculacion.
-$string['activeenrolupdatedalert'] = 'Activar aviso de actualizacion de matriculacion';
-$string['activeenrolupdatedalert_help'] = 'Activar aviso de actualizacion de matriculacion';
+$string['activecustomenrolupdatedalert'] = 'Activar aviso de actualizacion de matriculacion personalizado';
+$string['activecustomenrolupdatedalert_help'] = 'Activar aviso de actualizacion de matriculacion personaliado';
 $string['activarglobalenrolupdated'] = 'Activar para todo el sitio';
 $string['activarglobalenrolupdated_help'] = 'Activar la notificacion de actualizacion de matriculacion para todo el sitio';
 $string['updatedenrolmessage'] = 'Mensaje personalizado';
