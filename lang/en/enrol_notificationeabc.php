@@ -51,11 +51,11 @@ $string['namesender'] = 'Name sender ';
 $string['namesender_help'] = 'By default it takes the name set to the user support';
 $string['status'] = 'Active enrol notification';
 $string['subject'] = 'Enrolment notification';
-$string['activeenrolalert'] = 'Active enrol alert';
-$string['activeenrolalert_help'] = 'Active enrol alert';
+$string['activecustomenrolalert'] = 'Active custom message enrol alert';
+$string['activecustomenrolalert_help'] = 'Active custom enrol alert';
 // Unenrol notifications.
-$string['activeunenrolalert'] = 'Active unenrol notifications';
-$string['activeunenrolalert_help'] = 'Active unenrol alert';
+$string['activecustomunenrolalert'] = 'Active custom message unenrol notifications';
+$string['activecustomunenrolalert_help'] = 'Active unenrol alert';
 $string['activarglobalunenrolalert'] = 'Active global';
 $string['activarglobalunenrolalert_help'] = 'Active enrol notifications for all site';
 $string['unenrolmessage'] = 'Custom Message';
@@ -69,8 +69,8 @@ $string['unenrolmessage_help'] = 'Personalize the message that users will come t
 </pre>';
 $string['unenrolmessagedefault'] = 'You has been unenrolled from {$a->fullname} ({$a->url})';
 // Update enrol notifications.
-$string['activeenrolupdatedalert'] = 'Active update enrol notifications';
-$string['activeenrolupdatedalert_help'] = 'Active update enrol notifications';
+$string['activecustomenrolupdatedalert'] = 'Active custom update enrol notifications';
+$string['activecustomenrolupdatedalert_help'] = 'Active custom update enrol notifications';
 $string['activarglobalenrolupdated'] = 'Active global';
 $string['activarglobalenrolupdated_help'] = 'Active enrol updated notifications for all site';
 $string['updatedenrolmessage'] = 'Custom message';

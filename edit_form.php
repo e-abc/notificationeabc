@@ -56,24 +56,24 @@ class enrol_notificationeabc_edit_form extends moodleform
         $mform->addElement('select', 'status', get_string('status', 'enrol_notificationeabc'), $options);
 
         // Enrol notifications.
-        $mform->addElement('advcheckbox', 'customint1', get_string('activeenrolalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint1', 'activeenrolalert', 'enrol_notificationeabc');
+        $mform->addElement('advcheckbox', 'customint1', get_string('activecustomenrolalert', 'enrol_notificationeabc'));
+        $mform->addHelpButton('customint1', 'activecustomenrolalert', 'enrol_notificationeabc');
 
         $mform->addElement('editor', 'customtext1', get_string('location', 'enrol_notificationeabc'), null);
         $mform->setType('customtext1', PARAM_RAW);
         $mform->addHelpButton('customtext1', 'location', 'enrol_notificationeabc');
 
         // Unenrol notifications.
-        $mform->addElement('advcheckbox', 'customint2', get_string('activeunenrolalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint2', 'activeunenrolalert', 'enrol_notificationeabc');
+        $mform->addElement('advcheckbox', 'customint2', get_string('activecustomunenrolalert', 'enrol_notificationeabc'));
+        $mform->addHelpButton('customint2', 'activecustomunenrolalert', 'enrol_notificationeabc');
 
         $mform->addElement('editor', 'customtext2', get_string('unenrolmessage', 'enrol_notificationeabc'), null);
         $mform->setType('customtext2', PARAM_RAW);
         $mform->addHelpButton('customtext2', 'unenrolmessage', 'enrol_notificationeabc');
 
         // Update enrolment notifications.
-        $mform->addElement('advcheckbox', 'customint3', get_string('activeenrolupdatedalert', 'enrol_notificationeabc'));
-        $mform->addHelpButton('customint3', 'activeenrolupdatedalert', 'enrol_notificationeabc');
+        $mform->addElement('advcheckbox', 'customint3', get_string('activecustomenrolupdatedalert', 'enrol_notificationeabc'));
+        $mform->addHelpButton('customint3', 'activecustomenrolupdatedalert', 'enrol_notificationeabc');
 
         $mform->addElement('editor', 'customtext3', get_string('updatedenrolmessage', 'enrol_notificationeabc'), null);
         $mform->setType('customtext3', PARAM_RAW);
