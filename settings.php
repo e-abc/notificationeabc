@@ -40,23 +40,29 @@ if ($ADMIN->fulltree) {
     //     '',
     //     '1')
     // );
-    $settings->add(new admin_setting_configcheckbox(
-        'enrol_notificationeabc/activarglobal',
-        get_string('activarglobal', 'enrol_notificationeabc'),
-        get_string('activarglobal_help', 'enrol_notificationeabc'),
-        '')
-    );
     $settings->add(new admin_setting_heading(
         'enrol_notificationeabc_settings',
         '',
         get_string('pluginname_desc', 'enrol_notificationeabc'),
         '')
     );
+    $settings->add(new admin_setting_heading(
+        'enrol_notificationeabc/activarglobalheading',
+        get_string('activarglobal_heading', 'enrol_notificationeabc'),
+        '',
+        '')
+    );
+    $settings->add(new admin_setting_configcheckbox(
+        'enrol_notificationeabc/activarglobal',
+        get_string('activarglobal', 'enrol_notificationeabc'),
+        get_string('activarglobal_help', 'enrol_notificationeabc'),
+        '')
+    );
     $settings->add(new admin_setting_confightmleditor(
         'enrol_notificationeabc/location',
         get_string('location', 'enrol_notificationeabc'),
         get_string('location_help', 'enrol_notificationeabc'),
-        '')
+        get_string('filelockedmail', 'enrol_notificationeabc'))
     );
 
     // Unenrol notification.
@@ -67,6 +73,12 @@ if ($ADMIN->fulltree) {
     //     '',
     //     '1')
     // );
+    $settings->add(new admin_setting_heading(
+        'enrol_notificationeabc/activarglobalunenrolalertheading',
+        get_string('activarglobalunenrolalert_heading', 'enrol_notificationeabc'),
+        '',
+        '')
+    );
     $settings->add(new admin_setting_configcheckbox(
         'enrol_notificationeabc/activarglobalunenrolalert',
         get_string('activarglobalunenrolalert', 'enrol_notificationeabc'),
@@ -77,7 +89,7 @@ if ($ADMIN->fulltree) {
         'enrol_notificationeabc/unenrolmessage',
         get_string('unenrolmessage', 'enrol_notificationeabc'),
         get_string('unenrolmessage_help', 'enrol_notificationeabc'),
-        '')
+        get_string('unenrolmessagedefault', 'enrol_notificationeabc'))
     );
 
     // Update enrol notification.
@@ -88,6 +100,12 @@ if ($ADMIN->fulltree) {
     //     '',
     //     '1')
     // );
+    $settings->add(new admin_setting_heading(
+        'enrol_notificationeabc/activarglobalenrolupdatedheading',
+        get_string('activarglobalenrolupdated_heading', 'enrol_notificationeabc'),
+        '',
+        '')
+    );
     $settings->add(new admin_setting_configcheckbox(
         'enrol_notificationeabc/activarglobalenrolupdated',
         get_string('activarglobalenrolupdated', 'enrol_notificationeabc'),
@@ -98,6 +116,12 @@ if ($ADMIN->fulltree) {
         'enrol_notificationeabc/updatedenrolmessage',
         get_string('updatedenrolmessage', 'enrol_notificationeabc'),
         get_string('updatedenrolmessage_help', 'enrol_notificationeabc'),
+        get_string('updatedenrolmessagedefault', 'enrol_notificationeabc'))
+    );
+    $settings->add(new admin_setting_heading(
+        'enrol_notificationeabc/commonsettingsheading',
+        get_string('common_settings_heading', 'enrol_notificationeabc'),
+        '',
         '')
     );
     $settings->add(new admin_setting_configtext(

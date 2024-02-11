@@ -25,12 +25,12 @@
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
 
-$string['filelockedmail'] = 'You has been enroled in {$a->fullname} ({$a->url})';
+$string['filelockedmail'] = 'You have been enroled in {COURSENAME} ({URL})';
 $string['location'] = 'Message';
 $string['messageprovider:notificationeabc_enrolment'] = 'Enrol notification messages';
 $string['notificationeabc:manage'] = 'Manage notificationeabc';
 $string['pluginname'] = 'Enrol Notification';
-$string['pluginname_desc'] = 'Enrol notifications via mail';
+$string['pluginname_desc'] = 'Enrol notifications via email. Configure the site level default values here. The settings could be overwritten per course by adding Enrol Notification as an Enrolment method.';
 $string['location_help'] = 'Personalize the message that users will come to be enrolled. This field accepts the following markers which then will be replaced by the corresponding values ​​dynamically
 <pre>
 {COURSENAME} = course fullname
@@ -43,19 +43,25 @@ $string['fecha_help'] = 'Place the period for which you want to perform the firs
 $string['fecha'] = 'Period for verification of users enrolled courses';
 $string['activar'] = 'Enable initial verification';
 $string['activar_help'] = 'When activated will be verified by the immediate execution of cron later, users who were enrolled for the period specified above';
+$string['activarglobal_heading'] = 'Enrol notifications';
 $string['activarglobal'] = 'Active global';
 $string['activarglobal_help'] = 'Active enrol notification for all site';
+$string['common_settings_heading'] = 'Common settings';
 $string['emailsender'] = 'Email sender ';
 $string['emailsender_help'] = 'By default set to take the email user support ';
 $string['namesender'] = 'Name sender ';
 $string['namesender_help'] = 'By default it takes the name set to the user support';
 $string['status'] = 'Active enrol notification';
+$string['status_help'] = 'Set to "Yes" to enable notification on the course or overwrite the custom message defined in site level setting (if enabled).
+
+If enrol notification is enabled in site level, set to "No" will not disable the notifications but follow the site level setting.';
 $string['subject'] = 'Enrolment notification';
 $string['activeenrolalert'] = 'Active enrol alert';
 $string['activeenrolalert_help'] = 'Active enrol alert';
 // Unenrol notifications.
 $string['activeunenrolalert'] = 'Active unenrol notifications';
 $string['activeunenrolalert_help'] = 'Active unenrol alert';
+$string['activarglobalunenrolalert_heading'] = 'Unenrol notifications';
 $string['activarglobalunenrolalert'] = 'Active global';
 $string['activarglobalunenrolalert_help'] = 'Active enrol notifications for all site';
 $string['unenrolmessage'] = 'Custom Message';
@@ -67,10 +73,11 @@ $string['unenrolmessage_help'] = 'Personalize the message that users will come t
 {APELLIDO} = lastname
 {URL} = course url
 </pre>';
-$string['unenrolmessagedefault'] = 'You has been unenrolled from {$a->fullname} ({$a->url})';
+$string['unenrolmessagedefault'] = 'You have been unenrolled from {COURSENAME} ({URL})';
 // Update enrol notifications.
 $string['activeenrolupdatedalert'] = 'Active update enrol notifications';
 $string['activeenrolupdatedalert_help'] = 'Active update enrol notifications';
+$string['activarglobalenrolupdated_heading'] = 'Update enrol notifications';
 $string['activarglobalenrolupdated'] = 'Active global';
 $string['activarglobalenrolupdated_help'] = 'Active enrol updated notifications for all site';
 $string['updatedenrolmessage'] = 'Custom message';
@@ -82,6 +89,6 @@ $string['updatedenrolmessage_help'] = 'Personalize the message that users will c
 {APELLIDO} = lastname
 {URL} = course url
 </pre>';
-$string['updatedenrolmessagedefault'] = 'Your enrolment from {$a->fullname} has been updated ({$a->url})';
+$string['updatedenrolmessagedefault'] = 'Your enrolment to {COURSENAME} has been updated ({URL})';
 $string['succefullsend'] = 'The user {$a->username} has been notified about his enrollment in the {$a->coursename} course'."\n";
 $string['failsend'] = 'WARNING: it has no been able to notify the {$a->username} user about his enrollment in the {$a->coursename} course'."\n";
