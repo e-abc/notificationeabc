@@ -26,6 +26,8 @@
  */
 
 $string['filelockedmail'] = 'You has been enroled in {$a->fullname} ({$a->url})';
+$string['enrolsubject'] = 'Custom Subject';
+$string['enrolsubject_help'] = 'Personalize the email subject for enrol notifications';
 $string['location'] = 'Message';
 $string['messageprovider:notificationeabc_enrolment'] = 'Enrol notification messages';
 $string['notificationeabc:manage'] = 'Manage notificationeabc';
@@ -58,6 +60,8 @@ $string['activeunenrolalert'] = 'Active unenrol notifications';
 $string['activeunenrolalert_help'] = 'Active unenrol alert';
 $string['activarglobalunenrolalert'] = 'Active global';
 $string['activarglobalunenrolalert_help'] = 'Active enrol notifications for all site';
+$string['unenrolsubject'] = 'Custom Subject';
+$string['unenrolsubject_help'] = 'Personalize the email subject for unenrol notifications';
 $string['unenrolmessage'] = 'Custom Message';
 $string['unenrolmessage_help'] = 'Personalize the message that users will come to be unenrolled. This field accepts the following markers which then will be replaced by the corresponding values ​​dynamically
 <pre>
@@ -73,6 +77,8 @@ $string['activeenrolupdatedalert'] = 'Active update enrol notifications';
 $string['activeenrolupdatedalert_help'] = 'Active update enrol notifications';
 $string['activarglobalenrolupdated'] = 'Active global';
 $string['activarglobalenrolupdated_help'] = 'Active enrol updated notifications for all site';
+$string['updatedenrolsubject'] = 'Custom Subject';
+$string['updatedenrolsubject_help'] = 'Personalize the email subject for update enrol notifications';
 $string['updatedenrolmessage'] = 'Custom message';
 $string['updatedenrolmessage_help'] = 'Personalize the message that users will come to be updated. This field accepts the following markers which then will be replaced by the corresponding values ​​dynamically
 <pre>

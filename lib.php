@@ -66,6 +66,9 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         $plainmensajeunenrol = strip_tags($mensajeunenrol);
         $mensajeupdateenrol = $this->get_config('updatedenrolmessage');
         $plainmensajeupdateenrol = strip_tags($mensajeupdateenrol);
+        $enrolsubject = $this->get_config('enrolsubject');
+        $unenrolsubject = $this->get_config('unenrolsubject');
+        $updatedenrolmessage = $this->get_config('updatedenrolmessage');
 
         switch ((int)$type) {
             case 1:
@@ -83,6 +86,12 @@ class enrol_notificationeabc_plugin extends enrol_plugin
                 } else {
                     $mensaje = get_string("filelockedmail", "enrol_notificationeabc", $course);
                 }
+                
+                if (!empty($enrolsubject)) {
+                    $emailsubject = $this->process_mensaje($enrolsubject, $user, $course);
+                } else {
+                    $emailsubject = get_string('subject', 'enrol_notificationeabc');
+                }
                 break;
             case 2:
 
@@ -99,6 +108,12 @@ class enrol_notificationeabc_plugin extends enrol_plugin
                 } else {
                     $mensaje = get_string("unenrolmessagedefault", "enrol_notificationeabc", $course);
                 }
+                
+                if (!empty($unenrolsubject)) {
+                    $emailsubject = $this->process_mensaje($unenrolsubject, $user, $course);
+                } else {
+                    $emailsubject = get_string('subject', 'enrol_notificationeabc');
+                }
                 break;
             case 3:
 
@@ -114,6 +129,12 @@ class enrol_notificationeabc_plugin extends enrol_plugin
                     $mensaje = $this->process_mensaje($mensajeupdateenrol, $user, $course);
                 } else {
                     $mensaje = get_string("updatedenrolmessagedefault", "enrol_notificationeabc", $course);
+                }
+                
+                if (!empty($updatedenrolsubject)) {
+                    $emailsubject = $this->process_mensaje($updatedenrolsubject, $user, $course);
+                } else {
+                    $emailsubject = get_string('subject', 'enrol_notificationeabc');
                 }
                 break;
 
@@ -146,7 +167,7 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         $eventdata->name = 'notificationeabc_enrolment';
         $eventdata->userfrom = $sender;
         $eventdata->userto = $user->id;
-        $eventdata->subject = get_string('subject', 'enrol_notificationeabc');
+        $eventdata->subject = $emailsubject;
         $eventdata->fullmessage = '';
         $eventdata->fullmessageformat = FORMAT_HTML;
         $eventdata->fullmessagehtml = $mensaje;
@@ -219,6 +240,9 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         $fields['customint5'] = $this->get_config('activeenrolupdatedalert');
         $fields['customchar1'] = $this->get_config('emailsender');
         $fields['customchar2'] = $this->get_config('namesender');
+        $fields['customsubject1'] = $this->get_config('enrolsubject');
+        $fields['customsubject2'] = $this->get_config('unenrolsubject');
+        $fields['customsubject3'] = $this->get_config('updatedenrolsubject');
 
         return $fields;
     }
