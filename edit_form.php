@@ -54,6 +54,7 @@ class enrol_notificationeabc_edit_form extends moodleform
         $options = array(ENROL_INSTANCE_ENABLED => get_string('yes'),
             ENROL_INSTANCE_DISABLED => get_string('no'));
         $mform->addElement('select', 'status', get_string('status', 'enrol_notificationeabc'), $options);
+        $mform->addHelpButton('status', 'status', 'enrol_notificationeabc');
 
         // Enrol notifications.
         $mform->addElement('advcheckbox', 'customint1', get_string('activeenrolalert', 'enrol_notificationeabc'));

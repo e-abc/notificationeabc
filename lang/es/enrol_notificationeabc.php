@@ -25,7 +25,7 @@
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
 
-$string['filelockedmail'] = 'Ud ha sido matriculado en el curso {$a->fullname} ({$a->url})';
+$string['filelockedmail'] = 'Ud ha sido matriculado en el curso {COURSENAME} ({URL})';
 $string['location'] = 'Mensaje personalizado';
 $string['messageprovider:notificationeabc_enrolment'] = 'Enrol notification messages';
 $string['notificationeabc:manage'] = 'Gestionar notificaciones de matriculación';
@@ -67,7 +67,7 @@ $string['unenrolmessage_help'] = 'Personalice el mensaje que le llegará a los u
 {APELLIDO} = Apellido
 {URL} = Url del curso
 </pre>';
-$string['unenrolmessagedefault'] = 'Ud ha sido desmatriculado del curso {$a->fullname} ({$a->url})';
+$string['unenrolmessagedefault'] = 'Ud ha sido desmatriculado del curso {COURSENAME} ({URL})';
 // Aviso de actualizacion de matriculacion.
 $string['activeenrolupdatedalert'] = 'Activar aviso de actualizacion de matriculacion';
 $string['activeenrolupdatedalert_help'] = 'Activar aviso de actualizacion de matriculacion';
@@ -82,6 +82,6 @@ $string['updatedenrolmessage_help'] = 'Personalice el mensaje que le llegará a 
 {APELLIDO} = Apellido
 {URL} = Url del curso
 </pre>';
-$string['updatedenrolmessagedefault'] = 'Su matriculacion en el curso {$a->fullname} ha sido actualizada ({$a->url})';
+$string['updatedenrolmessagedefault'] = 'Su matriculacion en el curso {COURSENAME} ha sido actualizada ({URL})';
 $string['succefullsend'] = 'Se notifico al usuario {$a->username} sobre su matriculación en el curso {$a->coursename}'. "\n";
 $string['failsend'] = 'ATENCION: No se pudo notificar al usuario {$a->username} sobre su matriculación en el curso {$a->coursename}'."\n";
