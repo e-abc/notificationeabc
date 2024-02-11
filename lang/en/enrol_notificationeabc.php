@@ -25,13 +25,13 @@
  * @author     Osvaldo Arriola <osvaldo@e-abclearning.com>
  */
 
-$string['filelockedmail'] = 'You has been enroled in {$a->fullname} ({$a->url})';
-$string['location'] = 'Message';
+$string['filelockedmail'] = 'You have been enroled in {$a->fullname} ({$a->url})';
+$string['location'] = 'Custom Message';
 $string['messageprovider:notificationeabc_enrolment'] = 'Enrol notification messages';
 $string['notificationeabc:manage'] = 'Manage notificationeabc';
 $string['pluginname'] = 'Enrol Notification';
 $string['pluginname_desc'] = 'Enrol notifications via mail';
-$string['location_help'] = 'Personalize the message that users will come to be enrolled. This field accepts the following markers which then will be replaced by the corresponding values ​​dynamically
+$string['location_help'] = 'Personalize the message that send to users to be enrolled. This field accepts the following markers which then will be replaced by the corresponding values dynamically
 <pre>
 {COURSENAME} = course fullname
 {USERNAME} = username
@@ -39,27 +39,27 @@ $string['location_help'] = 'Personalize the message that users will come to be e
 {APELLIDO} = lastname
 {URL} = course url
 </pre>';
-$string['fecha_help'] = 'Place the period for which you want to perform the first virificación';
+$string['fecha_help'] = 'Place the period for which you want to perform the first verification';
 $string['fecha'] = 'Period for verification of users enrolled courses';
 $string['activar'] = 'Enable initial verification';
 $string['activar_help'] = 'When activated will be verified by the immediate execution of cron later, users who were enrolled for the period specified above';
-$string['activarglobal'] = 'Active global';
-$string['activarglobal_help'] = 'Active enrol notification for all site';
-$string['emailsender'] = 'Email sender ';
-$string['emailsender_help'] = 'By default set to take the email user support ';
-$string['namesender'] = 'Name sender ';
+$string['activarglobal'] = 'Activate globally';
+$string['activarglobal_help'] = 'Activate enrol notifications for entire site';
+$string['emailsender'] = 'Sender email address ';
+$string['emailsender_help'] = 'By default it takes the email address set to the user support ';
+$string['namesender'] = 'Sender email name ';
 $string['namesender_help'] = 'By default it takes the name set to the user support';
-$string['status'] = 'Active enrol notification';
+$string['status'] = 'Activate enrol notification';
 $string['subject'] = 'Enrolment notification';
-$string['activeenrolalert'] = 'Active enrol alert';
-$string['activeenrolalert_help'] = 'Active enrol alert';
+$string['activeenrolalert'] = 'Activate enrol notifications';
+$string['activeenrolalert_help'] = 'Activate enrol notifications';
 // Unenrol notifications.
-$string['activeunenrolalert'] = 'Active unenrol notifications';
-$string['activeunenrolalert_help'] = 'Active unenrol alert';
-$string['activarglobalunenrolalert'] = 'Active global';
-$string['activarglobalunenrolalert_help'] = 'Active enrol notifications for all site';
+$string['activeunenrolalert'] = 'Activate unenrol notifications';
+$string['activeunenrolalert_help'] = 'Activate unenrol notifications';
+$string['activarglobalunenrolalert'] = 'Activate globally';
+$string['activarglobalunenrolalert_help'] = 'Activate unenrol notifications for entire site';
 $string['unenrolmessage'] = 'Custom Message';
-$string['unenrolmessage_help'] = 'Personalize the message that users will come to be unenrolled. This field accepts the following markers which then will be replaced by the corresponding values ​​dynamically
+$string['unenrolmessage_help'] = 'Personalize the message that send to users to be unenrolled. This field accepts the following markers which then will be replaced by the corresponding values dynamically
 <pre>
 {COURSENAME} = course fullname
 {USERNAME} = username
@@ -67,14 +67,14 @@ $string['unenrolmessage_help'] = 'Personalize the message that users will come t
 {APELLIDO} = lastname
 {URL} = course url
 </pre>';
-$string['unenrolmessagedefault'] = 'You has been unenrolled from {$a->fullname} ({$a->url})';
+$string['unenrolmessagedefault'] = 'You have been unenrolled from {$a->fullname} ({$a->url})';
 // Update enrol notifications.
-$string['activeenrolupdatedalert'] = 'Active update enrol notifications';
-$string['activeenrolupdatedalert_help'] = 'Active update enrol notifications';
-$string['activarglobalenrolupdated'] = 'Active global';
-$string['activarglobalenrolupdated_help'] = 'Active enrol updated notifications for all site';
+$string['activeenrolupdatedalert'] = 'Activate update enrol notifications';
+$string['activeenrolupdatedalert_help'] = 'Activate update enrol notifications';
+$string['activarglobalenrolupdated'] = 'Activate globally';
+$string['activarglobalenrolupdated_help'] = 'Activate update enrol notifications for entire site';
 $string['updatedenrolmessage'] = 'Custom message';
-$string['updatedenrolmessage_help'] = 'Personalize the message that users will come to be updated. This field accepts the following markers which then will be replaced by the corresponding values ​​dynamically
+$string['updatedenrolmessage_help'] = 'Personalize the message that send to users to be updated. This field accepts the following markers which then will be replaced by the corresponding values dynamically
 <pre>
 {COURSENAME} = course fullname
 {USERNAME} = username
@@ -82,6 +82,6 @@ $string['updatedenrolmessage_help'] = 'Personalize the message that users will c
 {APELLIDO} = lastname
 {URL} = course url
 </pre>';
-$string['updatedenrolmessagedefault'] = 'Your enrolment from {$a->fullname} has been updated ({$a->url})';
+$string['updatedenrolmessagedefault'] = 'Your enrolment to {$a->fullname} has been updated ({$a->url})';
 $string['succefullsend'] = 'The user {$a->username} has been notified about his enrollment in the {$a->coursename} course'."\n";
-$string['failsend'] = 'WARNING: it has no been able to notify the {$a->username} user about his enrollment in the {$a->coursename} course'."\n";
+$string['failsend'] = 'WARNING: Unable to notify the {$a->username} user about his enrollment in the {$a->coursename} course'."\n";
