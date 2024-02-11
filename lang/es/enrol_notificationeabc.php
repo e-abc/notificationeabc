@@ -35,8 +35,8 @@ $string['location_help'] = 'Personalice el mensaje que le llegará a los usuario
 <pre>
 {COURSENAME} = Nombre completo del curso
 {USERNAME} = Nombre de usuario
-{NOMBRE} = Nombre
-{APELLIDO} = Apellido
+{NOMBRE} or {FIRSTNAME} = Nombre
+{APELLIDO} or {LASTNAME} = Apellido
 {URL} = Url del curso
 </pre>';
 $string['fecha_help'] = 'Coloque el periodo por el cual desea que se realice la virificación inicial de usuarios matriculados';
@@ -63,8 +63,8 @@ $string['unenrolmessage_help'] = 'Personalice el mensaje que le llegará a los u
 <pre>
 {COURSENAME} = Nombre completo del curso
 {USERNAME} = Nombre de usuario
-{NOMBRE} = Nombre
-{APELLIDO} = Apellido
+{NOMBRE} or {FIRSTNAME} = Nombre
+{APELLIDO} or {LASTNAME} = Apellido
 {URL} = Url del curso
 </pre>';
 $string['unenrolmessagedefault'] = 'Ud ha sido desmatriculado del curso {$a->fullname} ({$a->url})';
@@ -78,8 +78,8 @@ $string['updatedenrolmessage_help'] = 'Personalice el mensaje que le llegará a 
 <pre>
 {COURSENAME} = Nombre completo del curso
 {USERNAME} = Nombre de usuario
-{NOMBRE} = Nombre
-{APELLIDO} = Apellido
+{NOMBRE} or {FIRSTNAME} = Nombre
+{APELLIDO} or {LASTNAME} = Apellido
 {URL} = Url del curso
 </pre>';
 $string['updatedenrolmessagedefault'] = 'Su matriculacion en el curso {$a->fullname} ha sido actualizada ({$a->url})';
