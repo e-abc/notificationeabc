@@ -88,9 +88,9 @@ class enrol_notificationeabc_plugin extends enrol_plugin
                 }
                 
                 if (!empty($enrolsubject)) {
-                    $emailsubject = $this->process_mensaje($enrolsubject, $user, $course);
+                    $emailsubject = $this->process_subject($enrolsubject, $user, $course);
                 } else {
-                    $emailsubject = get_string('subject', 'enrol_notificationeabc');
+                    $emailsubject = $this->process_subject(get_string('subject', 'enrol_notificationeabc'), $user, $course);
                 }
                 break;
             case 2:
@@ -110,9 +110,9 @@ class enrol_notificationeabc_plugin extends enrol_plugin
                 }
                 
                 if (!empty($unenrolsubject)) {
-                    $emailsubject = $this->process_mensaje($unenrolsubject, $user, $course);
+                    $emailsubject = $this->process_subject($unenrolsubject, $user, $course);
                 } else {
-                    $emailsubject = get_string('subject', 'enrol_notificationeabc');
+                    $emailsubject = $this->process_subject(get_string('subject', 'enrol_notificationeabc'), $user, $course);
                 }
                 break;
             case 3:
@@ -132,9 +132,9 @@ class enrol_notificationeabc_plugin extends enrol_plugin
                 }
                 
                 if (!empty($updatedenrolsubject)) {
-                    $emailsubject = $this->process_mensaje($updatedenrolsubject, $user, $course);
+                    $emailsubject = $this->process_subject($updatedenrolsubject, $user, $course);
                 } else {
-                    $emailsubject = get_string('subject', 'enrol_notificationeabc');
+                    $emailsubject = $this->process_subject(get_string('subject', 'enrol_notificationeabc'), $user, $course);
                 }
                 break;
 
@@ -184,6 +184,26 @@ class enrol_notificationeabc_plugin extends enrol_plugin
         }
     } // End of function.
 
+    // Common function to process placeholders in content
+    /**
+     * Proccess message method
+     * @param String $mensaje el mensaje en bruto
+     * @param stdClass $user instancia usuario
+     * @param stdClass $course instancia curso
+     * @return String el mensaje procesado
+     */
+    public function process_placeholders($mensaje, stdClass $user, stdClass $course) {
+        global $CFG;
+        $m = $mensaje;
+        $url = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $course->id));
+        $m = str_replace('{COURSENAME}', $course->fullname, $m);
+        $m = str_replace('{USERNAME}', $user->username, $m);
+        $m = str_replace('{NOMBRE}', $user->firstname, $m);
+        $m = str_replace('{APELLIDO}', $user->lastname, $m);
+        $m = str_replace('{URL}', $url, $m);
+        return $m;
+    }
+
     // Procesa el mensaje para aceptar marcadores.
     /**
      * Proccess message method
@@ -195,12 +215,25 @@ class enrol_notificationeabc_plugin extends enrol_plugin
     public function process_mensaje($mensaje, stdClass $user, stdClass $course) {
         global $CFG;
         $m = $mensaje;
-        $url = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $course->id));
-        $m = str_replace('{COURSENAME}', $course->fullname, $m);
-        $m = str_replace('{USERNAME}', $user->username, $m);
-        $m = str_replace('{NOMBRE}', $user->firstname, $m);
-        $m = str_replace('{APELLIDO}', $user->lastname, $m);
-        $m = str_replace('{URL}', $url, $m);
+        $m = $this->process_placeholders($m, $user, $course);
+        $m = format_text($m);
+        return $m;
+    }
+
+
+    // Process email subject
+    /**
+     * Proccess message method
+     * @param String $mensaje el mensaje en bruto
+     * @param stdClass $user instancia usuario
+     * @param stdClass $course instancia curso
+     * @return String el mensaje procesado
+     */
+    public function process_subject($mensaje, stdClass $user, stdClass $course) {
+        global $CFG;
+        $m = $mensaje;
+        $m = $this->process_placeholders($m, $user, $course);
+        $m = format_string($m);
         return $m;
     }
 
