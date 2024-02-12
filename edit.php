@@ -105,6 +105,9 @@ if ($mform->is_cancelled()) {
             $instance->customint5 = 0;
         }
 
+        $instance->customsubject1 = $data->customsubject1;
+        $instance->customsubject2 = $data->customsubject2;
+        $instance->customsubject3 = $data->customsubject3;
         $instance->customtext1 = $data->customtext1['text'];
         $instance->customtext2 = $data->customtext2['text'];
         $instance->customtext3 = $data->customtext3['text'];
@@ -126,6 +129,9 @@ if ($mform->is_cancelled()) {
             'customint3' => $data->customint3,
             'customint4' => $data->customint4,
             'customint5' => $data->customint5,
+            'customsubject1' => $data->customsubject1,
+            'customsubject2' => $data->customsubject2,
+            'customsubject3' => $data->customsubject3,
             'customtext1' => $data->customtext1['text'],
             'customtext2' => $data->customtext2['text'],
             'customtext3' => $data->customtext3['text'],
